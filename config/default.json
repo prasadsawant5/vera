@@ -1,0 +1,27 @@
+{
+    "vera": {
+        "api": {
+            "url": "http://10.17.0.79/port_3480/data_request",
+            "authaHost": "vera-us-oem-autha11.mios.com",
+            "relayHost": "vera-us-oem-relay41.mios.com",
+            "deviceHost": "vera-us-oem-account12.mios.com",
+            "useRemote": true,
+            "unitId": "50060015",
+            "username": "expadmin",
+            "digest": "2028a3ebfdd9a419f07803c53083fa79b2e98339"
+        },
+        "categoryService": {
+
+            "3": "urn:upnp-org:serviceId:SwitchPower1",
+            "4": "urn:micasaverde-com:serviceId:SecuritySensor1",
+            "3": "urn:upnp-org:serviceId:SwitchPower1",
+            "4": "urn:micasaverde-com:serviceId:SecuritySensor1",
+            "5": "urn:upnp-org:serviceId:TemperatureSetpoint1",
+            "6": "urn:micasaverde-com:serviceId:SecuritySensor1",
+            "17": "urn:upnp-org:serviceId:SwitchPower1"
+            
+
+        }
+
+    }
+}
