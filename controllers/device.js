@@ -3,6 +3,7 @@ var async = require('async');
 var config = require('config');
 var async = require('async');
 var request = require('request')
+var extend = require('util')._extend
 
 var myCache = require( "memory-cache" );
 
@@ -21,30 +22,34 @@ exports.putDevices = function(req, res){
 var sessionToken = myCache.get('sessionToken')
     
     console.log("token: " + myCache.get('sessionToken'))
-    var body = req.query;
+    var body = req.body;
 
-    var deviceNum = body.DeviceNum
+    var deviceNum = body.deviceNum
     var category = body.category
-    var attribute = body.attribute
-    var newValue = body.newValue
-    var action, field
+    var action = body.action
+    var data = body.data
     var services = config.get('vera.categoryService') 
 
     console.log(services)
     var serviceId = services[category]
 
-    switch (category){
-        case "3": 
-            action = "SetTarget"
-            field = "newTargetValue"
-            break
-        
-        default:
-            break;
+    var queryObject = {
+        id: 'lu_action',
+        output_format: 'json',
+        DeviceNum: deviceNum,
+        serviceId: serviceId,
+        action: action
     }
-    var url = 'https://' + config.get('vera.api.relayHost') + '/relay/relay/relay/device/' + config.get('vera.api.unitId') + '/session/'+  sessionToken + '/port_3480/data_request?id=lu_action&output_format=json&DeviceNum=' + deviceNum + '&serviceId=' + serviceId + '&action=' + action+ '&'+ field+'=' + newValue
+    var o = extend({}, queryObject);
+    extend(o,  data);
+
+    console.log(o)
+
     console.log("url: " + url)
-    request(url , function (error, response, body) {
+    
+    var url = 'https://' + config.get('vera.api.relayHost') + '/relay/relay/relay/device/' + config.get('vera.api.unitId') + '/session/'+  sessionToken + '/port_3480/data_request'
+    console.log("url: " + url)
+    request({url:url, qs: o} , function (error, response, body) {
         console.log('device action statusCode:', response && response.statusCode); // Print the response status code if a response was received 
         if (error) {
             console.log(error)
