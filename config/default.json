@@ -11,14 +11,13 @@
             "digest": "2028a3ebfdd9a419f07803c53083fa79b2e98339"
         },
         "categoryService": {
-
-            "3": "urn:upnp-org:serviceId:SwitchPower1",
-            "4": "urn:micasaverde-com:serviceId:SecuritySensor1",
+            "2": "urn:upnp-org:serviceId:Dimming1",
             "3": "urn:upnp-org:serviceId:SwitchPower1",
             "4": "urn:micasaverde-com:serviceId:SecuritySensor1",
             "5": "urn:upnp-org:serviceId:TemperatureSetpoint1",
-            "6": "urn:micasaverde-com:serviceId:SecuritySensor1",
-            "17": "urn:upnp-org:serviceId:SwitchPower1"
+            "6": "urn:micasaverde-com:serviceId:Camera1",   //Camera
+            "7": "urn:micasaverde-com:serviceId:DoorLock1",    //Doorlock
+            "17": "urn:schemas-micasaverde-com:device:TemperatureSensor"  //Temperature Sensor
             
 
         }
