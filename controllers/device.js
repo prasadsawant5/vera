@@ -97,10 +97,10 @@ var serverAccount, userIdentity, identitySignature, pkAccount, sessionToken, pro
         function(callback){
             request('https://' + config.get('vera.api.authaHost') + '/autha/auth/username/' + config.get('vera.api.username') + '?SHA1Password=' + config.get('vera.api.digest') + '&PK_Oem=1' , function (error, response, body) {
                 if (error) {
+                    console.error('err');
                     return callback(error)
                 }
-                console.log('/autha/auth/username statusCode:', response && response.statusCode); // Print the response status code if a response was received 
-                console.log('body:', body); // Print  
+ 
                 var jsonBody = JSON.parse(body)
                 userIdentity = jsonBody.Identity;
                 serverAccount = jsonBody.Server_Account
@@ -110,8 +110,8 @@ var serverAccount, userIdentity, identitySignature, pkAccount, sessionToken, pro
                 identitySignature = jsonBody.IdentitySignature
 
                 var userIdentityBase64Decoded = new Buffer(userIdentity, 'base64').toString("ascii")
-                 var jsonIdentity = JSON.parse(userIdentityBase64Decoded)
-                 console.log(jsonIdentity)
+                var jsonIdentity = JSON.parse(userIdentityBase64Decoded)
+                console.log(jsonIdentity);
                 
                 callback()
             })
@@ -137,7 +137,7 @@ var serverAccount, userIdentity, identitySignature, pkAccount, sessionToken, pro
                 myCache.put("sessionToken", proxySessionToken)
 
                sessionToken =  myCache.get("sessionToken")
-                    console.log("cache sessionToken value: " + sessionToken)
+               console.log("cache sessionToken value: " + sessionToken)
                 
                 
                 callback()
@@ -162,48 +162,23 @@ var serverAccount, userIdentity, identitySignature, pkAccount, sessionToken, pro
                 callback()
             })
         },
-        // function(callback){
-        //     //Get Vera Controller info
-        //     var userIdentityBase64Decoded = new Buffer(userIdentity, 'base64').toString("ascii")
-        //     var jsonIdentity = JSON.parse(userIdentityBase64Decoded)
-        //     pkAccount = jsonIdentity.PK_Account
-        //     console.log("pkAccount: "  + pkAccount)
 
-        //     var options = {
-        //         url: 'https://' + serverAccount + '/account/account/account/'+ pkAccount +'/devices',
-        //         headers: {
-        //             "MMSAuth": userIdentity,
-        //             "MMSAuthSig": identitySignature
-        //         }
-        //     }
-        //     request(options,function(err, res, body){
-        //         if (err) {
-        //             return callback(err)
-        //         }
-        //         console.log('account/account/account/696461/devices statusCode:', res && res.statusCode); // Print the response status code if a response was received 
-        //         console.log('body:', body); // Print  
-
-        //         var jsonBody = JSON.parse(body)
-        //         deviceServer = jsonBody.Devices[0].Server_Device
-        //         console.log("deviceServer: " + deviceServer)
-
-        //         callback()
-        //     })
-        // },
         function(callback){
             //Get Devices info
             
             var options = {
-                url: 'https://' + config.get('vera.api.relayHost') + '/relay/relay/relay/device/'+ config.get('vera.api.unitId') +'/session/' + proxySessionToken + '/port_3480/data_request?id=lu_sdata'
+                url: 'https://' + config.get('vera.api.relayHost') + '/relay/relay/relay/device/'+ config.get('vera.api.unitId') +'/session/' + proxySessionToken + '/port_3480/data_request?id=lu_sdata',
+                headers: {
+                    'MMSSession': proxySessionToken
+                }
             }
+            console.log(options.url);
             request.get(options,function(err, res, body){
                 if (err) {
                     return callback(err)
                 }
                 console.log('/relay/relay/relay/device/ statusCode:', res && res.statusCode); // Print the response status code if a response was received 
-                //console.log('/device body:', body); // Print 
-                //console.log('/device body:', JSON.parse(body)); // Print 
-                
+
                 callback(null, JSON.parse(body))
             })
             
